@@ -1,0 +1,5 @@
+interface:
+  display_name: "Research Idea Incubator"
+  short_description: "Turn broad research ideas into evidence-grounded questions"
+  default_prompt: "Use $research-idea-incubator to turn my broad multimedia research idea into keywords, papers, a comparison matrix, and a research question."
+

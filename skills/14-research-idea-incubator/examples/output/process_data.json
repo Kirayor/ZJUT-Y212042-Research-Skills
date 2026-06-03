@@ -1,0 +1,230 @@
+﻿{
+    "project":  {
+                    "title":  "Research Idea Incubator",
+                    "subtitle":  "从宽泛 idea 到 research question 的科研孵化流程",
+                    "positioning":  "本项目不是普通文献检索工具，而是 idea 验证与收敛 agent：文献搜索只是证据步骤，最终目标是形成可执行研究问题。",
+                    "status":  "research_question_completed",
+                    "generatedAt":  "2026-05-30T13:47:46"
+                },
+    "idea":  {
+                 "raw":  "Use diffusion models for adversarial example generation in visual-language model (VLM) security. The user is interested in using diffusion-model image editing capabilities to generate more natural and stealthy attack images for VLMs, including possible black-box evaluation of commercial models such as GPT/Gemini in a safe and compliant way.",
+                 "refined":  "Can diffusion-based image editing generate visually natural, semantically plausible, and stealthy adversarial images that cause VLMs to produce incorrect, unsafe, or misleading outputs, without relying on obvious pixel-level noise?",
+                 "assumption":  "Diffusion-based image editing can introduce subtle but semantically meaningful visual changes that preserve human-perceived naturalness while shifting VLM outputs. These edits may expose failure modes that are not well captured by traditional gradient-based or noise-based adversarial attacks.",
+                 "currentStage":  "question"
+             },
+    "stages":  [
+                   {
+                       "id":  "idea",
+                       "name":  "初始 idea",
+                       "output":  "记录未经验证的研究灵感",
+                       "status":  "completed"
+                   },
+                   {
+                       "id":  "clarify",
+                       "name":  "多轮澄清",
+                       "output":  "明确任务、场景、约束和目标",
+                       "status":  "completed"
+                   },
+                   {
+                       "id":  "keywords",
+                       "name":  "关键词扩展",
+                       "output":  "生成中英文关键词和检索式",
+                       "status":  "completed"
+                   },
+                   {
+                       "id":  "literature",
+                       "name":  "文献验证",
+                       "output":  "检索候选论文并总结相关工作",
+                       "status":  "completed"
+                   },
+                   {
+                       "id":  "matrix",
+                       "name":  "对比矩阵",
+                       "output":  "比较任务、方法、贡献、局限和关系",
+                       "status":  "completed"
+                   },
+                   {
+                       "id":  "question",
+                       "name":  "研究问题",
+                       "output":  "形成 research question、风险和实验计划",
+                       "status":  "completed"
+                   }
+               ],
+    "clarifyingQuestions":  [
+                                "Should the first literature search focus more on diffusion-based adversarial image generation or VLM/multimodal jailbreak attacks?",
+                                "Should the lightweight demo prioritize harmless correctness failures, such as VQA/captioning errors, before safety/jailbreak behavior?",
+                                "Should the project frame commercial VLMs only as future work, keeping the main experiment on open-source models?",
+                                "What level of safety-sensitive content is acceptable for this course project? A conservative option is to avoid harmful-content generation and focus on benign robustness failures."
+                            ],
+    "keywords":  {
+                     "core":  [
+                                  "visual-language model security",
+                                  "vision-language model robustness",
+                                  "VLM adversarial examples",
+                                  "multimodal adversarial attack",
+                                  "image-only adversarial attack",
+                                  "semantic-preserving adversarial examples",
+                                  "natural adversarial examples",
+                                  "black-box VLM attack",
+                                  "multimodal safety evaluation",
+                                  "VLM red teaming"
+                              ],
+                     "method":  [
+                                    "diffusion model",
+                                    "diffusion-based image editing",
+                                    "text-guided image editing",
+                                    "image-to-image diffusion",
+                                    "semantic image editing",
+                                    "adversarial image generation",
+                                    "generative adversarial examples",
+                                    "stealthy adversarial perturbation",
+                                    "natural image perturbation",
+                                    "imperceptible perturbation",
+                                    "semantic perturbation",
+                                    "prompt-to-prompt editing",
+                                    "latent diffusion model",
+                                    "Stable Diffusion",
+                                    "inpainting-based attack",
+                                    "instruction-guided image editing"
+                                ],
+                     "domain":  [
+                                    "vision-language model",
+                                    "visual-language model",
+                                    "multimodal large language model",
+                                    "MLLM",
+                                    "large vision-language model",
+                                    "LVLM",
+                                    "VLM safety",
+                                    "multimodal robustness",
+                                    "multimodal jailbreak",
+                                    "image-based jailbreak",
+                                    "visual prompt injection",
+                                    "visual adversarial attack",
+                                    "image captioning robustness",
+                                    "visual question answering robustness",
+                                    "object grounding robustness",
+                                    "hallucination in VLMs"
+                                ],
+                     "dataset":  [
+                                     "COCO",
+                                     "MS COCO",
+                                     "Flickr30K",
+                                     "Visual Genome",
+                                     "VQAv2",
+                                     "OK-VQA",
+                                     "GQA",
+                                     "NoCaps",
+                                     "ImageNet",
+                                     "ImageNet-A",
+                                     "ImageNet-R",
+                                     "A-OKVQA",
+                                     "MM-SafetyBench",
+                                     "MMBench",
+                                     "SEED-Bench",
+                                     "LLaVA-Bench"
+                                 ],
+                     "evaluation":  [
+                                        "attack success rate",
+                                        "ASR",
+                                        "semantic similarity",
+                                        "image-text similarity",
+                                        "CLIP similarity",
+                                        "perceptual similarity",
+                                        "LPIPS",
+                                        "SSIM",
+                                        "PSNR",
+                                        "naturalness score",
+                                        "human perceptual quality",
+                                        "response correctness",
+                                        "VQA accuracy",
+                                        "caption accuracy",
+                                        "hallucination rate",
+                                        "refusal rate"
+                                    ],
+                     "chinese":  [
+                                     "视觉语言模型安全",
+                                     "视觉语言模型鲁棒性",
+                                     "多模态大模型安全",
+                                     "多模态对抗攻击",
+                                     "视觉对抗样本",
+                                     "图像对抗样本生成",
+                                     "图像-only 攻击",
+                                     "语义保持对抗样本",
+                                     "自然对抗样本",
+                                     "扩散模型图像编辑",
+                                     "基于扩散模型的对抗攻击",
+                                     "生成式对抗样本",
+                                     "隐蔽扰动",
+                                     "语义扰动",
+                                     "多模态 jailbreak",
+                                     "图像 jailbreak"
+                                 ]
+                 },
+    "papers":  [
+                   {
+                       "title":  "SD-NAE: Generating Natural Adversarial Examples with Stable Diffusion",
+                       "task":  "自然对抗样本生成；主要用于误导图像分类模型。具体数据集、分类器和指标需要全文核查。",
+                       "method":  "Stable Diffusion 驱动的受控生成；优化类别 token embedding，并用目标分类器损失梯度引导。细节需要全文核查。",
+                       "contribution":  "将 Stable Diffusion 用于主动合成自然对抗样本，把对抗目标注入生成过程。",
+                       "limitation":  "非 VLM 任务；未显示 VQA、captioning、grounding 或安全拒答评估；实验细节和结果强度需全文核查。",
+                       "relation":  "可作为“扩散生成自然对抗图像”的方法基础；我们可将其迁移到 image-only VLM 攻击，并补充 VQA/captioning/安全评估。"
+                   },
+                   {
+                       "title":  "Content-based Unrestricted Adversarial Attack",
+                       "task":  "Unrestricted adversarial attack；面向视觉模型和防御方法。具体模型、数据集和指标需要全文核查。",
+                       "method":  "基于自然图像低维流形的内容级优化；使用 Stable Diffusion 实现 Adversarial Content Attack (ACA)。",
+                       "contribution":  "将 unrestricted attack 与自然图像流形、Stable Diffusion 结合，提升攻击性能与 photorealism。",
+                       "limitation":  "未直接评估语言输出或跨模态推理；内容级变化可能削弱“语义保持”论证；实验对象和指标需全文核查。",
+                       "relation":  "提供从像素扰动转向内容/语义扰动的参考；我们的方案需要把 content edit 约束为 semantic-preserving diffusion edit，并评估 VLM 输出变化。"
+                   },
+                   {
+                       "title":  "Visual Adversarial Examples Jailbreak Aligned Large Language Models",
+                       "task":  "VLM/MLLM 安全与 jailbreak；视觉对抗样本绕过 aligned LLM 安全护栏。具体模型和 harmful instruction corpus 需全文核查。",
+                       "method":  "视觉对抗样本作为 jailbreak 载体；利用视觉输入连续高维的攻击面。是否使用传统扰动或具体优化方式需全文核查。",
+                       "contribution":  "证明视觉模态可成为多模态对齐系统弱点，并展示单个视觉对抗样本可能通用 jailbreak。",
+                       "limitation":  "安全敏感，复现需合规；不一定自然或扩散生成；自然性和语义保持指标未明确。",
+                       "relation":  "为 VLM image-side 安全风险提供强动机；我们可把 jailbreak 作为风险边界或未来工作，优先做 benign VQA/captioning/grounding 失败。"
+                   },
+                   {
+                       "title":  "FigStep: Jailbreaking Large Vision-Language Models via Typographic Visual Prompts",
+                       "task":  "LVLM 黑盒 jailbreak；将禁止性内容转为图像中的排版文字提示。",
+                       "method":  "Typographic visual prompt；把文本指令转为图像输入，并分析视觉嵌入安全对齐缺陷。",
+                       "contribution":  "提出低成本黑盒视觉 jailbreak，报告六个开源 LVLM 平均 ASR 82.50%，并与多类 jailbreak baseline 比较。",
+                       "limitation":  "不符合自然扩散编辑设定；安全敏感；对商业模型和自然图像攻击适用性需核查。",
+                       "relation":  "可作为 image-based jailbreak baseline；帮助区分 typographic visual prompt 与 natural diffusion-edited adversarial image。"
+                   },
+                   {
+                       "title":  "Red Teaming Visual Language Models",
+                       "task":  "VLM 红队评测；覆盖 faithfulness、privacy、safety、fairness 等风险维度。",
+                       "method":  "构建 RTVLM 数据集和 benchmark；用 RTVLM 评估 VLM，并对 LLaVA-v1.5 做 SFT 红队对齐。",
+                       "contribution":  "提出 RTVLM 红队数据集，覆盖 12 个子任务和 4 类风险；显示开源 VLM 与 GPT-4V 存在性能差距，且红队 SFT 可提升表现。",
+                       "limitation":  "不是攻击生成方法；不解决自然对抗图像生成；评分标准和复现实验细节需全文核查。",
+                       "relation":  "可作为评估维度和任务框架，把 diffusion-edited adversarial images 放进 faithfulness/safety/multimodal jailbreak 等红队场景。"
+                   }
+               ],
+    "risks":  [
+                  {
+                      "name":  "创新性风险",
+                      "level":  "high",
+                      "description":  "Candidate 1（Efficient Generation of Targeted and Transferable Adversarial Examples for Vision-Language Models via Diffusion Models）可能已经非常接近本问题，必须优先全文核查。",
+                      "response":  "优先全文核查最接近的 diffusion + VLM adversarial 工作，并在报告中明确本项目的低风险任务边界。"
+                  },
+                  {
+                      "name":  "实验风险",
+                      "level":  "medium",
+                      "description":  "diffusion edit 改动过大时，VLM 输出变化可能是合理的，不构成 adversarial failure",
+                      "response":  "把实验收窄到 20-50 张图像和一个 VLM，先证明流程可行，再讨论大规模评测。"
+                  },
+                  {
+                      "name":  "评价风险",
+                      "level":  "medium",
+                      "description":  "“语义保持”是否只是主观判断？",
+                      "response":  "同时记录 attack success、语义保持和自然性，避免把普通编辑误称为对抗攻击。"
+                  }
+              ],
+    "finalQuestion":  {
+                          "draft":  "Can diffusion-based natural image editing generate visually plausible and approximately semantic-preserving image variants that cause VLMs to make more errors on benign captioning or VQA tasks under normal text prompts?",
+                          "claim":  "贴合原始 idea: 关注 diffusion-based image editing、image-only attack、semantic/natural preservation 和 VLM robustness。；风险可控: 使用 benign captioning/VQA/grounding failure，不需要直接复现 harmful jailbreak。；实验规模可控: 可以用少量图像、一个开源 VLM、一个扩散编辑工具和简单指标完成最小实验。；与已有工作形成清晰区别: 它不是只做分类器自然对抗样本，也不是 typographic jailbreak，而是把自然扩散编辑用于 VLM 的普通视觉语言任务鲁棒性测试。",
+                          "nextExperiment":  "最小实验计划：数据选择: 选 20–50 张 COCO/VQAv2/GQA 或自选自然图像，每张图像配 1 个普通 captioning 或 VQA prompt。；图像编辑: 使用 Stable Diffusion / instruction-guided image editing 生成自然变体，优先做轻微属性、背景、局部物体或纹理变化。；VLM 测试: 对原图和编辑图输入相同普通文本 prompt，记录 VLM 输出。；输出评估: VQA accuracy / response correctness; caption semantic error 或 hallucination; attack success rate：原图正确、编辑图错误的比例; semantic preservation：CLIP similarity 或人工判断; perceptual naturalness：人工评分或简单视觉质量检查。；案例分析: 选 3–5 个成功/失败案例，分析 diffusion edit 为什么影响 VLM。"
+                      }
+}

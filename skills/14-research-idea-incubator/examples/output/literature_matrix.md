@@ -1,0 +1,16 @@
+# Literature Comparison Matrix
+
+| 论文 | 任务场景 | 方法类型 | 是否使用扩散模型 | 是否面向 VLM/LVLM | 是否自然/语义保持 | 主要贡献 | 主要局限 | 对我们 idea 的启发 |
+|---|---|---|---|---|---|---|---|---|
+| SD-NAE: Generating Natural Adversarial Examples with Stable Diffusion | 自然对抗样本生成；主要用于误导图像分类模型。具体数据集、分类器和指标需要全文核查。 | Stable Diffusion 驱动的受控生成；优化类别 token embedding，并用目标分类器损失梯度引导。细节需要全文核查。 | 是。明确使用 Stable Diffusion。 | 否/不明确。当前摘要信息显示主要面向图像分类，不是 VLM/LVLM；需全文核查是否有跨模态实验。 | 是/部分是。目标是 natural adversarial examples，强调自然可信；是否严格语义保持、如何度量需全文核查。 | 将 Stable Diffusion 用于主动合成自然对抗样本，把对抗目标注入生成过程。 | 非 VLM 任务；未显示 VQA、captioning、grounding 或安全拒答评估；实验细节和结果强度需全文核查。 | 可作为“扩散生成自然对抗图像”的方法基础；我们可将其迁移到 image-only VLM 攻击，并补充 VQA/captioning/安全评估。 |
+| Content-based Unrestricted Adversarial Attack | Unrestricted adversarial attack；面向视觉模型和防御方法。具体模型、数据集和指标需要全文核查。 | 基于自然图像低维流形的内容级优化；使用 Stable Diffusion 实现 Adversarial Content Attack (ACA)。 | 是。明确基于 Stable Diffusion 实现 ACA。 | 否/不明确。摘要显示面向深度视觉模型及防御方法，未直接针对 VLM/LVLM；需全文核查。 | 部分是。强调 photorealistic 和 content-based，但“内容变化”可能改变语义；是否语义保持需全文核查。 | 将 unrestricted attack 与自然图像流形、Stable Diffusion 结合，提升攻击性能与 photorealism。 | 未直接评估语言输出或跨模态推理；内容级变化可能削弱“语义保持”论证；实验对象和指标需全文核查。 | 提供从像素扰动转向内容/语义扰动的参考；我们的方案需要把 content edit 约束为 semantic-preserving diffusion edit，并评估 VLM 输出变化。 |
+| Visual Adversarial Examples Jailbreak Aligned Large Language Models | VLM/MLLM 安全与 jailbreak；视觉对抗样本绕过 aligned LLM 安全护栏。具体模型和 harmful instruction corpus 需全文核查。 | 视觉对抗样本作为 jailbreak 载体；利用视觉输入连续高维的攻击面。是否使用传统扰动或具体优化方式需全文核查。 | 否/未见。当前摘要未显示使用扩散模型。 | 是。面向集成视觉能力的 aligned LLM/VLM。 | 不明确/可能否。摘要未说明自然性、语义保持或人类感知质量；更可能偏 adversarial perturbation，需全文核查。 | 证明视觉模态可成为多模态对齐系统弱点，并展示单个视觉对抗样本可能通用 jailbreak。 | 安全敏感，复现需合规；不一定自然或扩散生成；自然性和语义保持指标未明确。 | 为 VLM image-side 安全风险提供强动机；我们可把 jailbreak 作为风险边界或未来工作，优先做 benign VQA/captioning/grounding 失败。 |
+| FigStep: Jailbreaking Large Vision-Language Models via Typographic Visual Prompts | LVLM 黑盒 jailbreak；将禁止性内容转为图像中的排版文字提示。 | Typographic visual prompt；把文本指令转为图像输入，并分析视觉嵌入安全对齐缺陷。 | 否。当前摘要未显示扩散模型。 | 是。明确面向六个开源 LVLM。具体模型列表需全文核查。 | 否/弱相关。图像是排版文字提示，不是自然场景图像；不符合 semantic-preserving natural edit。 | 提出低成本黑盒视觉 jailbreak，报告六个开源 LVLM 平均 ASR 82.50%，并与多类 jailbreak baseline 比较。 | 不符合自然扩散编辑设定；安全敏感；对商业模型和自然图像攻击适用性需核查。 | 可作为 image-based jailbreak baseline；帮助区分 typographic visual prompt 与 natural diffusion-edited adversarial image。 |
+| Red Teaming Visual Language Models | VLM 红队评测；覆盖 faithfulness、privacy、safety、fairness 等风险维度。 | 构建 RTVLM 数据集和 benchmark；用 RTVLM 评估 VLM，并对 LLaVA-v1.5 做 SFT 红队对齐。 | 否。不是扩散生成方法。 | 是。评估 10 个开源 VLM，并与 GPT-4V 对比；具体模型清单需全文核查。 | 不适用/不直接。关注评测与对齐，不生成自然对抗图像；相关子任务是否含 image misleading 需全文核查。 | 提出 RTVLM 红队数据集，覆盖 12 个子任务和 4 类风险；显示开源 VLM 与 GPT-4V 存在性能差距，且红队 SFT 可提升表现。 | 不是攻击生成方法；不解决自然对抗图像生成；评分标准和复现实验细节需全文核查。 | 可作为评估维度和任务框架，把 diffusion-edited adversarial images 放进 faithfulness/safety/multimodal jailbreak 等红队场景。 |
+
+## Cross-paper Takeaways
+
+- 与扩散生成最直接相关的是 SD-NAE 和 Content-based Unrestricted Adversarial Attack，但二者当前证据主要指向视觉分类/视觉模型，需要全文核查是否有 VLM/LVLM 实验。
+- 与 VLM/LVLM 安全最直接相关的是 Visual Adversarial Examples Jailbreak、FigStep 和 Red Teaming Visual Language Models，但它们当前不是 diffusion-based natural image editing 方法。
+- 当前 idea 的潜在空隙是：把 diffusion-based natural/semantic image editing 与 VLM image-only robustness/safety evaluation 结合起来，同时避免只做 typographic prompt 或传统像素扰动。
+- 后续全文核查重点：实验模型、数据集、攻击成功率定义、自然性/语义保持指标、是否存在 black-box VLM 评估、是否有可复现代码。

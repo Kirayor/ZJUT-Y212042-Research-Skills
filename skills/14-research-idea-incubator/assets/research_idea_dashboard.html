@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research Idea Incubator Dashboard</title>
+  <style>
+    :root {
+      --bg: #f6f7f2;
+      --panel: #ffffff;
+      --ink: #20242a;
+      --muted: #667085;
+      --line: #d8ded8;
+      --teal: #177e89;
+      --green: #4c7c59;
+      --amber: #b7791f;
+      --red: #b5473b;
+      --blue: #2f5f98;
+      --shadow: 0 10px 24px rgba(20, 28, 38, 0.08);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topbar {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 18px 24px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      min-height: 36px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 7px 12px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      border-color: var(--teal);
+    }
+
+    .btn.primary {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #ffffff;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    main {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px 24px 32px;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 18px;
+    }
+
+    nav {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 12px;
+      align-self: start;
+      position: sticky;
+      top: 16px;
+    }
+
+    .stage-btn {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      text-align: left;
+      border-radius: 6px;
+      padding: 10px 10px;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .stage-btn:hover,
+    .stage-btn.active {
+      background: #edf4f1;
+      color: #0f5d66;
+    }
+
+    .stage-index {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #e2e8e4;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .stage-btn.active .stage-index {
+      background: var(--teal);
+      color: #ffffff;
+    }
+
+    .content {
+      display: grid;
+      gap: 18px;
+    }
+
+    .band {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .band-title {
+      margin: 0 0 12px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px;
+      background: #fbfcfa;
+    }
+
+    .field label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .field p {
+      margin: 0;
+    }
+
+    .diagram-wrap {
+      overflow-x: auto;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      min-width: 760px;
+      height: 260px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+      gap: 14px;
+    }
+
+    .list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .list li {
+      border-left: 4px solid var(--teal);
+      background: #f8faf8;
+      border-radius: 4px;
+      padding: 9px 10px;
+    }
+
+    .keyword-groups {
+      display: grid;
+      gap: 12px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      background: #ffffff;
+      border-radius: 999px;
+      padding: 5px 10px;
+      color: var(--ink);
+      font-size: 13px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 860px;
+      background: #ffffff;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      background: #eef3ef;
+      color: #263238;
+      font-weight: 700;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .risk-card {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px;
+      background: #ffffff;
+    }
+
+    .risk-card h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .risk-card p {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .risk-level {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: #ffffff;
+      background: var(--amber);
+      margin-bottom: 8px;
+    }
+
+    .risk-level.high {
+      background: var(--red);
+    }
+
+    .risk-level.medium {
+      background: var(--amber);
+    }
+
+    .question-box {
+      border-left: 5px solid var(--blue);
+      background: #f5f8fb;
+      border-radius: 4px;
+      padding: 14px;
+    }
+
+    .question-box p {
+      margin: 0;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .topbar,
+      main,
+      .detail-grid,
+      .summary-grid,
+      .risk-grid {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        position: static;
+      }
+
+      .toolbar {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="topbar">
+        <div>
+          <h1 id="title">Research Idea Incubator</h1>
+          <div class="subtitle" id="subtitle">从宽泛 idea 到 research question 的科研孵化流程</div>
+        </div>
+        <div class="toolbar">
+          <button class="btn" id="loadJsonBtn">导入 JSON</button>
+          <input class="file-input" type="file" id="jsonFile" accept="application/json,.json">
+          <button class="btn" id="copyBtn">复制汇报摘要</button>
+          <button class="btn primary" id="exportBtn">导出流程图 PNG</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <nav id="stageNav" aria-label="流程阶段"></nav>
+
+      <section class="content">
+        <section class="band">
+          <h2 class="band-title">项目定位</h2>
+          <div class="summary-grid">
+            <div class="field">
+              <label>Raw idea</label>
+              <p id="rawIdea"></p>
+            </div>
+            <div class="field">
+              <label>Refined idea</label>
+              <p id="refinedIdea"></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="band">
+          <h2 class="band-title">Idea 演化流程图</h2>
+          <div class="diagram-wrap">
+            <svg id="flowSvg" viewBox="0 0 1100 260" role="img" aria-label="idea 演化流程图"></svg>
+          </div>
+          <p class="status" id="stageStatus"></p>
+        </section>
+
+        <section class="band">
+          <h2 class="band-title" id="activeStageTitle">阶段详情</h2>
+          <div class="detail-grid">
+            <div>
+              <h3>澄清问题</h3>
+              <ul class="list" id="questionList"></ul>
+            </div>
+            <div>
+              <h3>当前阶段输出</h3>
+              <div class="field">
+                <label id="activeStageName"></label>
+                <p id="activeStageOutput"></p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="band">
+          <h2 class="band-title">关键词</h2>
+          <div class="keyword-groups" id="keywordGroups"></div>
+        </section>
+
+        <section class="band">
+          <h2 class="band-title">文献对比矩阵</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Paper</th>
+                  <th>Task</th>
+                  <th>Method</th>
+                  <th>Contribution</th>
+                  <th>Limitation</th>
+                  <th>Relation</th>
+                </tr>
+              </thead>
+              <tbody id="paperTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="band">
+          <h2 class="band-title">风险与控制</h2>
+          <div class="risk-grid" id="riskGrid"></div>
+        </section>
+
+        <section class="band">
+          <h2 class="band-title">最终 Research Question 草稿</h2>
+          <div class="question-box">
+            <p id="finalQuestion"></p>
+          </div>
+          <div class="summary-grid" style="margin-top: 12px;">
+            <div class="field">
+              <label>核心 claim</label>
+              <p id="finalClaim"></p>
+            </div>
+            <div class="field">
+              <label>下一步实验</label>
+              <p id="nextExperiment"></p>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const defaultData = {
+      project: {
+        title: "Research Idea Incubator",
+        subtitle: "从宽泛 idea 到 research question 的科研孵化流程",
+        positioning: "本项目不是普通文献检索工具，而是把初始研究灵感放入可验证、可追踪、可人工干预的研究收敛流程。"
+      },
+      idea: {
+        raw: "希望研究多模态内容分析中的一个新问题，但初始想法比较宽泛，需要进一步验证是否有研究价值。",
+        refined: "构建一个 agent，帮助用户通过多轮澄清、关键词扩展、文献验证和对比矩阵，把宽泛 idea 收敛为可执行的 research question。",
+        assumption: "初始 idea 往往不是严格研究问题，需要通过文献和人工反馈验证其新颖性、可行性和实验路径。"
+      },
+      stages: [
+        { id: "idea", name: "初始 idea", output: "记录未经验证的研究灵感" },
+        { id: "clarify", name: "多轮澄清", output: "明确任务、场景、数据、约束和目标" },
+        { id: "keywords", name: "关键词扩展", output: "生成中英文关键词、同义词和检索式" },
+        { id: "literature", name: "文献验证", output: "检索或手动导入论文，判断已有工作" },
+        { id: "matrix", name: "对比矩阵", output: "比较方法、贡献、局限和与本 idea 的关系" },
+        { id: "question", name: "研究问题", output: "形成 research question、风险分析和实验建议" }
+      ],
+      clarifyingQuestions: [
+        "这个 idea 面向什么具体任务？",
+        "希望解决现有方法的什么痛点？",
+        "是否有可用数据集、评价指标或实验资源？",
+        "最希望证明的核心 claim 是什么？",
+        "如果 reviewer 质疑创新性，最可能质疑哪一点？"
+      ],
+      keywords: {
+        core: ["research idea incubation", "AI-assisted research workflow", "literature mapping", "research question generation", "novelty assessment"],
+        multimedia: ["multimodal content analysis", "vision-language model", "image-text understanding", "video understanding"],
+        chinese: ["科研选题孵化", "文献验证", "研究问题生成", "多模态内容分析", "创新性风险分析"]
+      },
+      papers: [
+        {
+          title: "Paper A",
+          task: "AI 辅助文献检索",
+          method: "基于关键词和摘要的检索与总结",
+          contribution: "提高文献发现和摘要整理效率",
+          limitation: "通常不处理初始 idea 的澄清和研究问题收敛",
+          relation: "可作为文献验证模块的参考"
+        },
+        {
+          title: "Paper B",
+          task: "Research assistant agent",
+          method: "多步骤 agent workflow",
+          contribution: "支持论文阅读、任务规划或代码辅助",
+          limitation: "对 novelty risk 和 human-in-the-loop 的表达不足",
+          relation: "可作为 agent 架构对比对象"
+        },
+        {
+          title: "Paper C",
+          task: "多模态研究综述",
+          method: "人工整理领域任务、数据集和方法",
+          contribution: "提供领域背景和分类框架",
+          limitation: "不是交互式 idea 孵化流程",
+          relation: "可用于补充领域关键词和研究背景"
+        }
+      ],
+      risks: [
+        {
+          name: "创新性风险",
+          level: "high",
+          description: "如果只做文献检索和论文总结，容易与其他项目同质化。",
+          response: "强调 idea 验证与收敛，输出 research question 和风险分析。"
+        },
+        {
+          name: "引用可靠性风险",
+          level: "medium",
+          description: "模型可能生成不准确的论文信息或误解论文贡献。",
+          response: "保留人工导入论文和 citation confidence 字段。"
+        },
+        {
+          name: "安全风险",
+          level: "medium",
+          description: "第三方中转 API 下不宜给予 agent 过高本机执行权限。",
+          response: "使用 cautious 或 deny-all 执行策略，前端不接触 API key。"
+        }
+      ],
+      finalQuestion: {
+        draft: "如何构建一个 human-in-the-loop 的科研 idea 孵化 agent，使其能够把宽泛研究灵感转化为可验证的 research question？",
+        claim: "该 agent 的价值不在于替代文献阅读，而在于记录和推动 idea 的澄清、验证、对比和收敛过程。",
+        nextExperiment: "选取一个真实多模态研究 idea，记录 agent 在澄清问题、生成关键词、整理文献矩阵和输出 research question 过程中的效果。"
+      }
+    };
+
+    let data = defaultData;
+    let activeStage = 0;
+
+    const colors = ["#177e89", "#4c7c59", "#2f5f98", "#b7791f", "#7b5f91", "#b5473b"];
+
+    function setText(id, text) {
+      document.getElementById(id).textContent = text || "";
+    }
+
+    function render() {
+      setText("title", data.project.title);
+      setText("subtitle", data.project.subtitle);
+      setText("rawIdea", data.idea.raw);
+      setText("refinedIdea", data.idea.refined);
+      renderNav();
+      renderFlow();
+      renderStageDetail();
+      renderQuestions();
+      renderKeywords();
+      renderPapers();
+      renderRisks();
+      setText("finalQuestion", data.finalQuestion?.draft);
+      setText("finalClaim", data.finalQuestion?.claim);
+      setText("nextExperiment", data.finalQuestion?.nextExperiment);
+    }
+
+    function inferActiveStageIndex() {
+      const currentStage = data.idea?.currentStage || "";
+      const currentMatch = data.stages.findIndex((stage) => {
+        return currentStage === stage.id || currentStage.includes(stage.id);
+      });
+      if (currentMatch >= 0) return currentMatch;
+
+      const inProgress = data.stages.findIndex((stage) => stage.status === "in_progress");
+      if (inProgress >= 0) return inProgress;
+
+      const firstOpen = data.stages.findIndex((stage) => stage.status !== "completed");
+      if (firstOpen >= 0) return firstOpen;
+
+      return Math.max(0, data.stages.length - 1);
+    }
+
+    function renderNav() {
+      const nav = document.getElementById("stageNav");
+      nav.innerHTML = "";
+      data.stages.forEach((stage, index) => {
+        const btn = document.createElement("button");
+        btn.className = `stage-btn ${index === activeStage ? "active" : ""}`;
+        btn.type = "button";
+        btn.innerHTML = `<span class="stage-index">${index + 1}</span><span>${stage.name}</span>`;
+        btn.addEventListener("click", () => {
+          activeStage = index;
+          render();
+        });
+        nav.appendChild(btn);
+      });
+    }
+
+    function renderFlow() {
+      const svg = document.getElementById("flowSvg");
+      const width = 1100;
+      const y = 112;
+      const nodeW = 134;
+      const nodeH = 64;
+      const gap = (width - 80 - nodeW * data.stages.length) / Math.max(1, data.stages.length - 1);
+
+      svg.innerHTML = "";
+      const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+      defs.innerHTML = `
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L9,3 z" fill="#667085"></path>
+        </marker>
+      `;
+      svg.appendChild(defs);
+
+      data.stages.forEach((stage, index) => {
+        const x = 40 + index * (nodeW + gap);
+        if (index < data.stages.length - 1) {
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", x + nodeW + 6);
+          line.setAttribute("y1", y + nodeH / 2);
+          line.setAttribute("x2", x + nodeW + gap - 10);
+          line.setAttribute("y2", y + nodeH / 2);
+          line.setAttribute("stroke", "#667085");
+          line.setAttribute("stroke-width", "2");
+          line.setAttribute("marker-end", "url(#arrow)");
+          svg.appendChild(line);
+        }
+
+        const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        group.setAttribute("role", "button");
+        group.setAttribute("tabindex", "0");
+        group.style.cursor = "pointer";
+        group.addEventListener("click", () => {
+          activeStage = index;
+          render();
+        });
+
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rect.setAttribute("x", x);
+        rect.setAttribute("y", y);
+        rect.setAttribute("width", nodeW);
+        rect.setAttribute("height", nodeH);
+        rect.setAttribute("rx", "8");
+        rect.setAttribute("fill", index === activeStage ? colors[index % colors.length] : "#ffffff");
+        rect.setAttribute("stroke", colors[index % colors.length]);
+        rect.setAttribute("stroke-width", index === activeStage ? "3" : "2");
+        group.appendChild(rect);
+
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute("x", x + nodeW / 2);
+        label.setAttribute("y", y + 28);
+        label.setAttribute("text-anchor", "middle");
+        label.setAttribute("font-size", "15");
+        label.setAttribute("font-weight", "700");
+        label.setAttribute("fill", index === activeStage ? "#ffffff" : "#20242a");
+        label.textContent = stage.name;
+        group.appendChild(label);
+
+        const output = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        output.setAttribute("x", x + nodeW / 2);
+        output.setAttribute("y", y + 48);
+        output.setAttribute("text-anchor", "middle");
+        output.setAttribute("font-size", "11");
+        output.setAttribute("fill", index === activeStage ? "#e8fffb" : "#667085");
+        output.textContent = `阶段 ${index + 1}`;
+        group.appendChild(output);
+
+        svg.appendChild(group);
+      });
+    }
+
+    function renderStageDetail() {
+      const stage = data.stages[activeStage];
+      setText("activeStageTitle", `阶段 ${activeStage + 1}: ${stage.name}`);
+      setText("activeStageName", stage.name);
+      setText("activeStageOutput", stage.output);
+      setText("stageStatus", `当前选中：${stage.name}。该阶段输出：${stage.output}`);
+    }
+
+    function renderQuestions() {
+      const list = document.getElementById("questionList");
+      list.innerHTML = "";
+      data.clarifyingQuestions.forEach((question) => {
+        const li = document.createElement("li");
+        li.textContent = question;
+        list.appendChild(li);
+      });
+    }
+
+    function renderKeywords() {
+      const wrap = document.getElementById("keywordGroups");
+      wrap.innerHTML = "";
+      Object.entries(data.keywords).forEach(([group, words]) => {
+        const block = document.createElement("div");
+        block.className = "field";
+        const label = document.createElement("label");
+        label.textContent = group;
+        const chips = document.createElement("div");
+        chips.className = "chips";
+        words.forEach((word) => {
+          const span = document.createElement("span");
+          span.className = "chip";
+          span.textContent = word;
+          chips.appendChild(span);
+        });
+        block.appendChild(label);
+        block.appendChild(chips);
+        wrap.appendChild(block);
+      });
+    }
+
+    function renderPapers() {
+      const tbody = document.getElementById("paperTable");
+      tbody.innerHTML = "";
+      data.papers.forEach((paper) => {
+        const tr = document.createElement("tr");
+        ["title", "task", "method", "contribution", "limitation", "relation"].forEach((key) => {
+          const td = document.createElement("td");
+          td.textContent = paper[key] || "";
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderRisks() {
+      const grid = document.getElementById("riskGrid");
+      grid.innerHTML = "";
+      data.risks.forEach((risk) => {
+        const div = document.createElement("div");
+        div.className = "risk-card";
+        div.innerHTML = `
+          <span class="risk-level ${risk.level}">${risk.level}</span>
+          <h3>${escapeHtml(risk.name)}</h3>
+          <p>${escapeHtml(risk.description)}</p>
+          <strong>应对：</strong>
+          <p>${escapeHtml(risk.response)}</p>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function exportSvgAsPng() {
+      const svg = document.getElementById("flowSvg");
+      const serializer = new XMLSerializer();
+      const source = serializer.serializeToString(svg);
+      const blob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const image = new Image();
+      image.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = 2200;
+        canvas.height = 520;
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#f6f7f2";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(url);
+        const link = document.createElement("a");
+        link.download = "research_idea_flow.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      };
+      image.src = url;
+    }
+
+    function copySummary() {
+      const text = [
+        "本项目不是文献检索 agent，而是 idea 验证与收敛 agent。",
+        `初始 idea：${data.idea.raw}`,
+        `收敛目标：${data.idea.refined}`,
+        `Research question：${data.finalQuestion.draft}`,
+        `核心 claim：${data.finalQuestion.claim}`
+      ].join("\n");
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert("已复制汇报摘要");
+      }).catch(() => {
+        alert(text);
+      });
+    }
+
+    function loadJsonFile(file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          data = JSON.parse(reader.result);
+          activeStage = inferActiveStageIndex();
+          render();
+        } catch (error) {
+          alert(`JSON 解析失败：${error.message}`);
+        }
+      };
+      reader.readAsText(file, "utf-8");
+    }
+
+    async function loadProcessData() {
+      if (window.location.protocol === "file:") return;
+
+      try {
+        const response = await fetch("process_data.json", { cache: "no-store" });
+        if (!response.ok) return;
+        data = await response.json();
+        activeStage = inferActiveStageIndex();
+        render();
+      } catch (error) {
+        console.warn("Unable to auto-load process_data.json", error);
+      }
+    }
+
+    document.getElementById("exportBtn").addEventListener("click", exportSvgAsPng);
+    document.getElementById("copyBtn").addEventListener("click", copySummary);
+    document.getElementById("loadJsonBtn").addEventListener("click", () => {
+      document.getElementById("jsonFile").click();
+    });
+    document.getElementById("jsonFile").addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (file) loadJsonFile(file);
+    });
+
+    render();
+    loadProcessData();
+  </script>
+</body>
+</html>
